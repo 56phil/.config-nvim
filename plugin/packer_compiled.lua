@@ -85,13 +85,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/prh/.local/share/nvim/site/pack/packer/start/c.vim"
   },
-  ["deoplete-clang"] = {
+  ["cmp-buffer"] = {
     loaded = true,
-    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/deoplete-clang"
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/cmp-buffer"
   },
-  ["deoplete.nvim"] = {
+  ["cmp-nvim-lsp"] = {
     loaded = true,
-    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/deoplete.nvim"
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp"
   },
   fzf = {
     loaded = true,
@@ -113,9 +113,17 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/prh/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim"
   },
+  ["lsp_signature.nvim"] = {
+    loaded = true,
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim"
+  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/Users/prh/.local/share/nvim/site/pack/packer/start/lualine.nvim"
+  },
+  ncm2 = {
+    loaded = true,
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/ncm2"
   },
   nerdtree = {
     loaded = true,
@@ -124,6 +132,10 @@ _G.packer_plugins = {
   ["nvim-autopairs"] = {
     loaded = true,
     path = "/Users/prh/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
+  },
+  ["nvim-cmp"] = {
+    loaded = true,
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/nvim-cmp"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -144,6 +156,10 @@ _G.packer_plugins = {
   ["nvim-treesitter-textobjects"] = {
     loaded = true,
     path = "/Users/prh/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects"
+  },
+  ["nvim-yarp"] = {
+    loaded = true,
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/nvim-yarp"
   },
   ["onedark.vim"] = {
     loaded = true,
@@ -208,6 +224,10 @@ _G.packer_plugins = {
   ["vim-surround"] = {
     loaded = true,
     path = "/Users/prh/.local/share/nvim/site/pack/packer/start/vim-surround"
+  },
+  vimtex = {
+    loaded = true,
+    path = "/Users/prh/.local/share/nvim/site/pack/packer/start/vimtex"
   }
 }
 

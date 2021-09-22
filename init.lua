@@ -1,5 +1,4 @@
--- TAKEN FROM OLIVER ROQUES' A LUA.INIT IN "Neovim 0.5 features and the switch
--- to init.lua" https://oroques.dev/notes/neovim-init/
+-- https://oroques.dev/notes/neovim-init/
 
 -- HELPERS --------------------------------------------------------------------
 local cmd = vim.cmd  -- to execute Vim commands e.g. cmd('pwd')
@@ -12,6 +11,14 @@ local function map(mode, lhs, rhs, opts)
     if opts then options = vim.tbl_extend('force', options, opts) end
     vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
+
+--[[
+local function getCurrentDirectory()
+require('lfs')
+local cwd = lfs.currentdir()
+return cwd
+end
+]]
 
 -- PACKER BOOTSTRAP -----------------------------------------------------------
 -- local execute = vim.api.nvim_command
@@ -179,37 +186,65 @@ require('packer').startup(function()
         config = function()
             require("lualine").setup {
                 options = {
-                    theme = "github",
+                    theme = "gruvbox",
                     icons_enabled = true,
                     section_separators = {'', ''},
                     component_separators = {'', ''},
                     disabled_filetypes = {}
                 },
                 sections = {
-                    lualine_a = {'bufnr', 'mode'},
+                    lualine_a = {'mode'},
                     lualine_b = {'branch'},
                     lualine_c = {'filename'},
-                    lualine_x = {'encoding', 'fileformat', 'filetype'},
+                    lualine_x = {},
                     lualine_y = {'progress'},
                     lualine_z = {'location'}
                 },
                 inactive_sections = {
                     lualine_a = {},
                     lualine_b = {},
-                    lualine_c = {'filename'},
-                    lualine_x = {'location'},
+                    lualine_c = {},
+                    lualine_x = {},
                     lualine_y = {},
                     lualine_z = {}
                 },
-                tabline = {},
+                tabline = {
+                    lualine_a = {'bufnr'},
+                    lualine_b = {'hostname'},
+                    lualine_c = {},
+                    lualine_x = {'encoding'},
+                    lualine_y = {'fileformat'},
+                    lualine_z = {'filetype'}
+                },
                 extensions = {}
 
             }
         end
     }
-    --
+
     -- LUASNIP ----------------------------------------------------------------
     use { 'L3MON4D3/LuaSnip' }
+
+    -- NEORG ------------------------------------------------------------------
+    use {
+        "nvim-neorg/neorg",
+        config = function()
+            require('neorg').setup {
+                -- Tell Neorg what modules to load
+                load = {
+                    ["core.defaults"] = {}, -- Load all the default modules
+                    ["core.norg.concealer"] = {}, -- Allows for use of icons
+                    ["core.norg.dirman"] = { -- Manage your directories with Neorg
+                    config = {
+                        workspaces = {
+                            my_workspace = "~/neorg"
+                        }
+                    }  }
+                },
+            }
+        end,
+        requires = "nvim-lua/plenary.nvim"
+    }
 
     -- TELESCOPE --------------------------------------------------------------
     use {
@@ -219,8 +254,6 @@ require('packer').startup(function()
 
     -- THEMES -----------------------------------------------------------------
     use {"ellisonleao/gruvbox.nvim", requires = {"rktjmp/lush.nvim"}}
-    use 'EdenEast/nightfox.nvim'
-    use('rose-pine/neovim')
     use "projekt0n/github-nvim-theme"
 
     -- TREE-SITTER ------------------------------------------------------------
@@ -244,12 +277,20 @@ require("lsp-colors").setup({
     Hint = "#10B981"
 })
 
--- BUFFER HOPPING -------------------------------------------------------------
-map('n', '<right>', ':bn<cr>')          -- next buffer
-map('n', '<left>', ':bp<cr>')           -- previous buffer
+map('n', '<C-u>', 'viwU<ESC>')              -- WORD UPPER
+map('i', '<C-u>', '<ESC>viwU')              -- WORD UPPER
+map('n', '<leader>s', ':up<cr>:so %<cr>')   -- SAVE & SOURCE
+map('n', '<S-up>', '<C-w>k')                -- MOVE UP a WINDOW
+map('n', '<S-down>', '<C-w>j')              -- MOVE DOWN A WINDOW
+map('n', '<S-left>', '<C-w>h')              -- MOVE LEFT A WINDOW
+map('n', '<S-right>', '<C-w>l')             -- MOVE TO WINDOW ON THE RIGHT
+map('n', '<leader>w', ':up<cr>')            -- UPDATE
+map('n', '<left>', ':bp<cr>')               -- PREVIOUS BUFFER
+map('n', '<right>', ':bn<cr>')              -- NEXT BUFFER
+
 
 -- CMP ------------------------------------------------------------------------
-    -- Setup nvim-cmp.
+-- Setup nvim-cmp.
 local cmp = require'cmp'
 
 cmp.setup({
@@ -272,7 +313,7 @@ cmp.setup({
     }
 })
 
-    -- <Tab> to navigate the completion menu
+-- <Tab> to navigate the completion menu
 map('i', '<S-Tab>', 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true})
 map('i', '<Tab>', 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true})
 
@@ -280,16 +321,8 @@ map('n', '<C-l>', '<cmd>noh<CR>')       -- Clear highlights
 map('n', '<leader>o', 'm`o<Esc>``')     -- Insert a newline in normal mode
 
 -- COLORSCHEME PUT YOUR FAVORITE HERE -----------------------------------------
-cmd 'colorscheme desert'
--- cmd 'colorscheme gruvbox'
--- cmd 'colorscheme nightfox'
--- cmd 'colorscheme nordfox'
--- cmd 'colorscheme palefox'
--- cmd 'colorscheme rose-pine'
-
--- EASYCAPS -------------------------------------------------------------------
-map('n', '<C-u>', 'viwU<ESC>')          -- WORD UPPER
-map('i', '<C-u>', '<ESC>viwU')          -- WORD UPPER
+-- cmd 'colorscheme desert'
+cmd 'colorscheme gruvbox'
 
 -- GUTTER STUFF ---------------------------------------------------------------
 require'nvim-web-devicons'.setup {
@@ -308,13 +341,11 @@ require'nvim-web-devicons'.setup {
 }
 
 -- LATEX ----------------------------------------------------------------------
-cmd ([[
-let g:tex_flavor  = 'latex'
-let g:tex_conceal = ''
-let g:vimtex_fold_manual = 1
-let g:vimtex_latexmk_continuous = 1
-let g:vimtex_compiler_progname = 'nvr'
-]])
+g.tex_flavor  = 'latex'
+g.tex_conceal = ''
+g.vimtex_fold_manual = 1
+g.vimtex_latexmk_continuous = 1
+g.vimtex_compiler_progname = 'nvr'
 
 -- LSP ------------------------------------------------------------------------
 local nvim_lsp = require('lspconfig')
@@ -365,8 +396,8 @@ cfg = {
 
 require'lsp_signature'.on_attach(cfg, bufnr) -- no need to specify bufnr if you don't use toggle_key
 
-    -- Use an on_attach function to only map the following keys
-    -- after the language server attaches to the current buffer
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -397,8 +428,8 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-    -- Use a loop to conveniently call 'setup' on multiple servers and
-    -- map buffer local keybindings when the language server attaches
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
 local servers = { 'ccls', 'clangd', 'pylsp', 'pyright'  }
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
@@ -425,7 +456,7 @@ map('n', '<down>', 'ddp')               -- move line down
 
 -- NVIM TREE ------------------------------------------------------------------
 local tree_cb = require'nvim-tree.config'.nvim_tree_callback
-    -- default mappings
+-- default mappings
 g.nvim_tree_bindings = {
     { key = {"<CR>", "o", "<2-LeftMouse>"}, cb = tree_cb("edit") },
     { key = {"<2-RightMouse>", "<C-]>"},    cb = tree_cb("cd") },
@@ -520,7 +551,7 @@ require'nvim-treesitter.configs'.setup {
     ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     ignore_install = { "javascript" }, -- List of parsers to ignore installing
     highlight = {
-        enable = true,              -- false will disable the whole extension
+        enable = false,             -- false will disable the whole extension
         disable = { "c", "rust" },  -- list of language that will be disabled
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -530,17 +561,15 @@ require'nvim-treesitter.configs'.setup {
     },
 }
 
+local parser_configs = require('nvim-treesitter.parsers').get_parser_configs()
+
+parser_configs.norg = {
+    install_info = {
+        url = "https://github.com/nvim-neorg/tree-sitter-norg",
+        files = { "src/parser.c", "src/scanner.cc" },
+        branch = "main"
+    },
+}
+
 -- UPDATE & SOURCE ------------------------------------------------------------
-map('n', '<leader>s', ':up<cr>:so %<cr>')
-
--- VIMTEX ---------------------------------------------------------------------
-
--- WINDOW HOPPING -------------------------------------------------------------
-map('n', '<S-up>', '<C-w>k')            -- move up a window
-map('n', '<S-down>', '<C-w>j')          -- move down a window
-map('n', '<S-left>', '<C-w>h')          -- move left a window
-map('n', '<S-right>', '<C-w>l')         -- move to window on the right
-
--- WRITE ONLY WHEN CHANGED-----------------------------------------------------
-map('n', '<leader>w', ':up<cr>')
 

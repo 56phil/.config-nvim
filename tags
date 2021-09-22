@@ -9,23 +9,17 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	//
-buf_set_keymap	init-old.lua	/^  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end$/;"	f
 buf_set_keymap	init.lua	/^    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end$/;"	f
-buf_set_option	init-old.lua	/^  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end$/;"	f
 buf_set_option	init.lua	/^    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end$/;"	f
 config	init.lua	/^        config = function()$/;"	f
 config	init.lua	/^    config = function ()$/;"	f
 error_msg	plugin/packer_compiled.lua	/^local no_errors, error_msg = pcall(function()$/;"	f
-expand	init-old.lua	/^      expand = function(args)$/;"	f
 expand	init.lua	/^                expand = function(args)$/;"	f
 expand	init.lua	/^        expand = function(args)$/;"	f
-fn	init-old.lua	/^local fn = vim.fn    -- to call Vim functions e.g. fn.bufnr()$/;"	f
 fn	init.lua	/^local fn = vim.fn    -- to call Vim functions e.g. fn.bufnr()$/;"	f
-map	init-old.lua	/^local function map(mode, lhs, rhs, opts)$/;"	f
+getCurrentDirectory	init.lua	/^local function getCurrentDirectory()$/;"	f
 map	init.lua	/^local function map(mode, lhs, rhs, opts)$/;"	f
-on_attach	init-old.lua	/^local on_attach = function(client, bufnr)$/;"	f
 on_attach	init.lua	/^local on_attach = function(client, bufnr)$/;"	f
-printObj	init-old.lua	/^function printObj(obj, hierarchyLevel)$/;"	f
 save_profiles	plugin/packer_compiled.lua	/^local function save_profiles(threshold)$/;"	f
 time	plugin/packer_compiled.lua	/^    time = function(chunk, start) end$/;"	f
 time	plugin/packer_compiled.lua	/^    time = function(chunk, start)$/;"	f
